@@ -1,0 +1,11 @@
+[Unit]
+Description=GlobalTradeCoin daemon serivce
+After=network.target
+
+[Service]
+Type=simple
+User=GlobalTradeCoin
+ExecStart=/opt/GlobalTradeCoin/GlobalTradeCoind
+
+[Install]
+WantedBy=multi-user.target

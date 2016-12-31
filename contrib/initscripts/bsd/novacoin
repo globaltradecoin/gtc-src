@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# PROVIDE: GlobalTradeCoin
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+#
+# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# GlobalTradeCoin_enable (bool): Set to NO by default. Set this variable to YES if you want to enable GlobalTradeCoin service.
+# GlobalTradeCoin_config (path): Set to /usr/local/etc/GlobalTradeCoin.conf by default.
+# GlobalTradeCoin_user:  The user account GlobalTradeCoin daemon runs as. It uses 'root' user by default.
+# GlobalTradeCoin_group: The group account GlobalTradeCoin daemon runs as. It uses 'wheel' group by default.
+# GlobalTradeCoin_datadir (str): Default to "/var/db/GlobalTradeCoin". Base data directory.
+
+. /etc/rc.subr
+
+name=GlobalTradeCoin
+rcvar=GlobalTradeCoin_enable
+
+: ${GlobalTradeCoin_enable:=NO}
+: ${GlobalTradeCoin_config=/usr/local/etc/GlobalTradeCoin.conf}
+: ${GlobalTradeCoin_datadir=/var/db/GlobalTradeCoin}
+: ${GlobalTradeCoin_user="root"}
+: ${GlobalTradeCoin_group="wheel"}
+
+required_files=${GlobalTradeCoin_config}
+command=/usr/local/bin/GlobalTradeCoind
+GlobalTradeCoin_chdir=${GlobalTradeCoin_datadir}
+pidfile="${GlobalTradeCoin_datadir}/GlobalTradeCoind.pid"
+stop_cmd=GlobalTradeCoin_stop
+command_args="-conf=${GlobalTradeCoin_config} -datadir=${GlobalTradeCoin_datadir} -daemon -pid=${pidfile}"
+start_precmd="${name}_prestart"
+
+GlobalTradeCoin_create_datadir()
+{
+	echo "Creating data directory"
+	eval mkdir -p ${GlobalTradeCoin_datadir}
+	[ $? -eq 0 ] && chown -R ${GlobalTradeCoin_user}:${GlobalTradeCoin_group} ${GlobalTradeCoin_datadir}
+}
+
+GlobalTradeCoin_prestart()
+{
+	if [ ! -d "${GlobalTradeCoin_datadir}/." ]; then
+		GlobalTradeCoin_create_datadir || return 1
+	fi
+}
+
+GlobalTradeCoin_requirepidfile()
+{
+	if [ ! "0`check_pidfile ${pidfile} ${command}`" -gt 1 ]; then
+		echo "${name} not running? (check $pidfile)."
+		exit 1
+	fi
+}
+
+GlobalTradeCoin_stop()
+{
+    GlobalTradeCoin_requirepidfile
+
+	echo "Stopping ${name}."
+	eval ${command} -conf=${GlobalTradeCoin_config} -datadir=${GlobalTradeCoin_datadir} stop
+	wait_for_pids ${rc_pid}
+}
+
+load_rc_config $name
+run_rc_command "$1"

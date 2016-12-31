@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=GlobalTradeCoin
+Comment=GlobalTradeCoin P2P Cryptocurrency
+Comment[ru]=GlobalTradeCoin, P2P криптовалюта
+Comment[fr]=GlobalTradeCoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=GlobalTradeCoin, eşten eşe kriptografik sanal para birimi
+Exec=/usr/bin/GlobalTradeCoin-qt
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/GlobalTradeCoin80.xpm
+MimeType=x-scheme-handler/GlobalTradeCoin;
+Categories=Office;

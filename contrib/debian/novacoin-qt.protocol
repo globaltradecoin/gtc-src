@@ -1,0 +1,11 @@
+[Protocol]
+exec=GlobalTradeCoin-qt '%u'
+protocol=GlobalTradeCoin
+input=none
+output=none
+helper=true
+listing=
+reading=false
+writing=false
+makedir=false
+deleting=false

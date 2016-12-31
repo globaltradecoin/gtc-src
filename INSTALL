@@ -1,0 +1,9 @@
+Building GlobalTradeCoin
+
+See doc/readme-qt.rst for instructions on building GlobalTradeCoin Qt,
+the intended-for-end-users, nice-graphical-interface, reference
+implementation of GlobalTradeCoin.
+
+See doc/build-*.txt for instructions on building GlobalTradeCoind,
+the intended-for-services, no-graphical-interface, reference
+implementation of GlobalTradeCoin.
